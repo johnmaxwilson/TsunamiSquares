@@ -146,65 +146,65 @@ int main (int argc, char **argv) {
     // For Pacific_900.txt, each row has 30 pixels. 
     // For Pacific_5184.txt, each row has 72 pixels.
     // center box
-    // int landRowLeft = 756; 
-    // int landRowRight = 766;
-    // for (int gradient = 0; gradient < 5; gradient++){
-    //   for (tsunamisquares::UIndex centralDIFF = (landRowLeft); centralDIFF < (landRowRight); centralDIFF++){
-    //     this_world.deformBottom(centralDIFF,bump_height - gradient*5);
-    //   }
-    //   landRowLeft  = landRowLeft + 72 + 1 ;
-    //   landRowRight = landRowRight + 72 - 1 ;
-    // }
+    int landRowLeft = 756; 
+    int landRowRight = 766;
+    for (int gradient = 0; gradient < 5; gradient++){
+      for (tsunamisquares::UIndex centralDIFF = (landRowLeft); centralDIFF < (landRowRight); centralDIFF++){
+        this_world.deformBottom(centralDIFF,bump_height - gradient*5);
+      }
+      landRowLeft  = landRowLeft + 72 + 1 ;
+      landRowRight = landRowRight + 72 - 1 ;
+    }
 
-    // landRowLeft = 1404; 
-    // landRowRight = 1414;
-    // for (int gradient = 0; gradient < 5; gradient++){
-    //   for (tsunamisquares::UIndex centralDIFF = (landRowLeft); centralDIFF < (landRowRight); centralDIFF++){
-    //     this_world.deformBottom(centralDIFF,bump_height - gradient*5);
-    //   }
-    //   landRowLeft  = landRowLeft - 72 + 1;
-    //   landRowRight = landRowRight - 72 - 1;
-    // }
+    landRowLeft = 1404; 
+    landRowRight = 1414;
+    for (int gradient = 0; gradient < 5; gradient++){
+      for (tsunamisquares::UIndex centralDIFF = (landRowLeft); centralDIFF < (landRowRight); centralDIFF++){
+        this_world.deformBottom(centralDIFF,bump_height - gradient*5);
+      }
+      landRowLeft  = landRowLeft - 72 + 1;
+      landRowRight = landRowRight - 72 - 1;
+    }
 
-    // tsunamisquares::UIndex centralDIFF = 828;
-    // for (int i = 0; i < 8; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height);
-    // }
+    tsunamisquares::UIndex centralDIFF = 828;
+    for (int i = 0; i < 8; i ++ ){
+      this_world.deformBottom(centralDIFF + 72*i ,bump_height);
+    }
 
-    // centralDIFF =  centralDIFF + 73;
-    // for (int i = 0; i < 6; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*1);
-    // }
+    centralDIFF =  centralDIFF + 73;
+    for (int i = 0; i < 6; i ++ ){
+      this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*1);
+    }
 
-    // centralDIFF =  centralDIFF + 73;
-    // for (int i = 0; i < 4; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*2);
-    // }
+    centralDIFF =  centralDIFF + 73;
+    for (int i = 0; i < 4; i ++ ){
+      this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*2);
+    }
 
-    // centralDIFF =  centralDIFF + 73;
-    // for (int i = 0; i < 2; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*3);
-    // }
+    centralDIFF =  centralDIFF + 73;
+    for (int i = 0; i < 2; i ++ ){
+      this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*3);
+    }
 
-    // centralDIFF = 837;
-    // for (int i = 0; i < 8; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height);
-    // }
+    centralDIFF = 837;
+    for (int i = 0; i < 8; i ++ ){
+      this_world.deformBottom(centralDIFF + 72*i ,bump_height);
+    }
 
-    // centralDIFF =  centralDIFF + 71;
-    // for (int i = 0; i < 6; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*1);
-    // }
+    centralDIFF =  centralDIFF + 71;
+    for (int i = 0; i < 6; i ++ ){
+      this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*1);
+    }
 
-    // centralDIFF =  centralDIFF + 71;
-    // for (int i = 0; i < 4; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*2);
-    // }
+    centralDIFF =  centralDIFF + 71;
+    for (int i = 0; i < 4; i ++ ){
+      this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*2);
+    }
 
-    // centralDIFF =  centralDIFF + 71;
-    // for (int i = 0; i < 2; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*3);
-    // }
+    centralDIFF =  centralDIFF + 71;
+    for (int i = 0; i < 2; i ++ ){
+      this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*3);
+    }
 
     // egdes of sandbox
     // top
