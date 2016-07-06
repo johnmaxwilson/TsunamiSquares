@@ -343,8 +343,10 @@ if __name__ == "__main__":
         assert T_STEP > 0
         N_STEP = float(T_MAX-T_MIN)/T_STEP
         # Do it
-        make_map_animation(sim_data, FPS, DPI, T_MIN, T_MAX, T_STEP, N_STEP, save_file)
-        # make_animation(sim_data, FPS, DPI, T_MIN, T_MAX, T_STEP, N_STEP)
+        # Ramya Edit: 
+        # for both lines below, we create a different kind of video, I forgot why
+        # make_map_animation(sim_data, FPS, DPI, T_MIN, T_MAX, T_STEP, N_STEP, save_file)
+        make_animation(sim_data, FPS, DPI, T_MIN, T_MAX, T_STEP, N_STEP)
 
     if MODE == "eq_field_plot":
         Levels = [-.3, -.2, -.1, -.05, -.008, .008, .05, .1, .2, .3]

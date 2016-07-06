@@ -34,7 +34,7 @@ int main (int argc, char **argv) {
     ///////////          CONSTANTS (to be moved to sim parameter file)        ////////////    
     // -------------------------------------------------------------------------------- //
     const std::string   out_file_name    = "RAMYA_MAKES_LAND.txt"; // name this relevant
-    const std::string   bathy_file       = "Pacific_5184.txt"; // name this relevant
+    const std::string   bathy_file       = "Pacific_900.txt"; // name this relevant
     //const std::string   kml_file         = "local/Pacific_36.kml";
     // const std::string   deformation_file = "local/Channel_Islands_test_bump.txt"; // kasey says we dont need this now
     // until later
@@ -106,7 +106,7 @@ int main (int argc, char **argv) {
    
     // Put water into squares to bring water level up to sealevel.
     std::cout << "Filling with water..." << std::flush;
-    
+    this_world.fillToSeaLevel();
 
     // for (int pixel_lons = 0; pixel_lons++; pixel_lons < num_lons){
     //   for ( int pixel_lats = 0; pixel_lats++; pixel_lats < ((int) num_lats*0.5) )
@@ -142,151 +142,55 @@ int main (int argc, char **argv) {
    //   == DEFORM A LAND BUMP =======
 
     
-    std::cout << " making a bowl shape...";
-    // For Pacific_900.txt, each row has 30 pixels. 
-    // For Pacific_5184.txt, each row has 72 pixels.
-    // center box
-    // int landRowLeft = 756; 
-    // int landRowRight = 766;
-    // for (int gradient = 0; gradient < 5; gradient++){
-    //   for (tsunamisquares::UIndex centralDIFF = (landRowLeft); centralDIFF < (landRowRight); centralDIFF++){
-    //     this_world.deformBottom(centralDIFF,bump_height - gradient*5);
-    //   }
-    //   landRowLeft  = landRowLeft + 72 + 1 ;
-    //   landRowRight = landRowRight + 72 - 1 ;
-    // }
+    std::cout << "\nmaking a bowl shape.";
 
-    // landRowLeft = 1404; 
-    // landRowRight = 1414;
-    // for (int gradient = 0; gradient < 5; gradient++){
-    //   for (tsunamisquares::UIndex centralDIFF = (landRowLeft); centralDIFF < (landRowRight); centralDIFF++){
-    //     this_world.deformBottom(centralDIFF,bump_height - gradient*5);
-    //   }
-    //   landRowLeft  = landRowLeft - 72 + 1;
-    //   landRowRight = landRowRight - 72 - 1;
-    // }
+    int xDimensions; 
+    int yDimensions;
+    std::cout << "\ninput the x dimension: "; 
+    std::cin >> xDimensions;
+    std::cout << "\nnow the y dimension: ";
+    std::cin >> yDimensions;
 
-    // tsunamisquares::UIndex centralDIFF = 828;
+    int landRowLeft = 0; 
+    int landRowRight = 0;
+    for (int gradient = 0; gradient < 5; gradient++){
+      for (tsunamisquares::UIndex centralDIFF = (100 + landRowLeft); centralDIFF < (110 + landRowRight); centralDIFF++){
+        this_world.deformBottom(centralDIFF,bump_height - gradient*5);
+      }
+      landRowLeft  = landRowLeft + 30 + 1;
+      landRowRight = landRowRight + 30 - 1;
+    }
+
+    landRowLeft = 120; 
+    landRowRight = 120;
+    for (int gradient = 0; gradient < 5; gradient++){
+      for (tsunamisquares::UIndex centralDIFF = (250 + landRowLeft); centralDIFF < (260 + landRowRight); centralDIFF++){
+        this_world.deformBottom(centralDIFF,bump_height - gradient*5);
+      }
+      landRowLeft  = landRowLeft - 30 + 1;
+      landRowRight = landRowRight - 30 - 1;
+    }
+
+    tsunamisquares::UIndex centralDIFF = 130;
+
+    for (int k = 0; k < 4; k++){
+      for (int i = 0; i < 8; i ++ ){
+        this_world.deformBottom(centralDIFF + 30*i ,bump_height - 5*k);
+      }
+      centralDIFF =  centralDIFF + 31;
+    }
+    
+      
+
+    // centralDIFF = 139;
     // for (int i = 0; i < 8; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height);
+    //   this_world.deformBottom(centralDIFF + 30*i ,bump_height);
     // }
 
-    // centralDIFF =  centralDIFF + 73;
+    // centralDIFF =  centralDIFF + 29;
     // for (int i = 0; i < 6; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*1);
+    //   this_world.deformBottom(centralDIFF + 30*i ,bump_height - 5*1);
     // }
-
-    // centralDIFF =  centralDIFF + 73;
-    // for (int i = 0; i < 4; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*2);
-    // }
-
-    // centralDIFF =  centralDIFF + 73;
-    // for (int i = 0; i < 2; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*3);
-    // }
-
-    // centralDIFF = 837;
-    // for (int i = 0; i < 8; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height);
-    // }
-
-    // centralDIFF =  centralDIFF + 71;
-    // for (int i = 0; i < 6; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*1);
-    // }
-
-    // centralDIFF =  centralDIFF + 71;
-    // for (int i = 0; i < 4; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*2);
-    // }
-
-    // centralDIFF =  centralDIFF + 71;
-    // for (int i = 0; i < 2; i ++ ){
-    //   this_world.deformBottom(centralDIFF + 72*i ,bump_height - 5*3);
-    // }
-
-    // egdes of sandbox
-    // top
-    for (int j = 0; j < 72; j++){
-      this_world.deformBottom(j, bump_height - 0*5);
-    }
-    for (int j = (72+1); j < (144-1); j++){
-      this_world.deformBottom(j, bump_height - 1*5);
-    }
-    for (int j = (144+2); j < (216-2); j++){
-      this_world.deformBottom(j, bump_height - 2*5);
-    }
-    for (int j = (216+3); j < (288-3); j++){
-      this_world.deformBottom(j, bump_height - 3*5);
-    }
-    for (int j = (288+4); j < (360-4); j++){
-      this_world.deformBottom(j, bump_height - 4*5);
-    }
-    // bottom
-    for (int j = 5112; j < 5185; j++){
-      this_world.deformBottom(j, bump_height - 0*5);
-    }
-    for (int j = (5040+1); j < (5112-1); j++){
-      this_world.deformBottom(j, bump_height - 1*5);
-    }
-    for (int j = (4968+2); j < (5040-2); j++){
-      this_world.deformBottom(j, bump_height - 2*5);
-    }
-    for (int j = (4896+3); j < (4968-3); j++){
-      this_world.deformBottom(j, bump_height - 3*5);
-    }
-    for (int j = (4824+4); j < (4896-4); j++){
-      this_world.deformBottom(j, bump_height - 4*5);
-    }
-    // right
-    for (int j = 1; j < 71; j++){
-      this_world.deformBottom(j*72, bump_height - 0*5);
-    }
-    for (int j = 2; j < 70; j++){
-      this_world.deformBottom(1 + 72*j, bump_height - 1*5);
-    }
-    for (int j = 3; j < 69; j++){
-      this_world.deformBottom(2 + 72*j, bump_height - 2*5);
-    }
-    for (int j = 4; j < 68; j++){
-      this_world.deformBottom(3 + 72*j, bump_height - 3*5);
-    }
-    for (int j = 5; j < 67; j++){
-      this_world.deformBottom(4 + 72*j, bump_height - 4*5);
-    }
-    // // left
-    for (int j = 1; j < 71; j++){
-      this_world.deformBottom(71+ j*72, bump_height - 0*5);
-    }
-    for (int j = 2; j < 70; j++){
-      this_world.deformBottom(70 + 72*j, bump_height - 1*5);
-    }
-    for (int j = 3; j < 69; j++){
-      this_world.deformBottom(69 + 72*j, bump_height - 2*5);
-    }
-    for (int j = 4; j < 68; j++){
-      this_world.deformBottom(68 + 72*j, bump_height - 3*5);
-    }
-    for (int j = 5; j < 67; j++){
-      this_world.deformBottom(67 + 72*j, bump_height - 4*5);
-    }
-
-this_world.fillToSeaLevel();
-
-   tsunamisquares::UIndex central = (int) (0.5*num_lons*(num_lats + 1));
-   std::cout << " about the central square " << central << "...";
-   
-   tsunamisquares::UIndex left    = this_world.square(central).left();
-   tsunamisquares::UIndex right   = this_world.square(central).right();
-   tsunamisquares::UIndex top     = this_world.square(central).top();
-   tsunamisquares::UIndex bottom  = this_world.square(central).bottom();
-   
-   this_world.deformBottom(central,bump_height);
-   this_world.deformBottom(left,   bump_height);
-   this_world.deformBottom(top,    bump_height);
-   this_world.deformBottom(right,  bump_height);
-   this_world.deformBottom(bottom, bump_height);
 
 
 //    // Optional: diffuse the central bump to be less peaked
