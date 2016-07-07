@@ -119,28 +119,8 @@ int main (int argc, char **argv) {
     //            Sea Floor Deformation and Initial Conditions                         //
     // --------------------------------------------------------------------------------//
     std::cout << "Deforming the bottom... " << std::endl;
-    
-    //     ==  DEFORM VIA FILE        ======
-    //this_world.deformFromFile(deformation_file.c_str());
-
-   //     ==  DEFORM VIA CENTER BUMP ======
-   // Find the 4 center squares and bump them by a constant height upward
-   // tsunamisquares::UIndex central = (int) (0.5*num_lons*(num_lats + 1));
-   // std::cout << " about the central square " << central << "...";
-   
-   // tsunamisquares::UIndex left    = this_world.square(central).left();
-   // tsunamisquares::UIndex right   = this_world.square(central).right();
-   // tsunamisquares::UIndex top     = this_world.square(central).top();
-   // tsunamisquares::UIndex bottom  = this_world.square(central).bottom();
-   
-   // this_world.deformBottom(central,bump_height);
-   // this_world.deformBottom(left,   bump_height);
-   // this_world.deformBottom(top,    bump_height);
-   // this_world.deformBottom(right,  bump_height);
-   // this_world.deformBottom(bottom, bump_height);
 
    //   == DEFORM A LAND BUMP =======
-
     
     std::cout << "\nmaking a bowl shape.";
 
@@ -172,12 +152,23 @@ int main (int argc, char **argv) {
     }
 
     tsunamisquares::UIndex centralDIFF = 130;
-
+    int j = 8;
     for (int k = 0; k < 4; k++){
-      for (int i = 0; i < 8; i ++ ){
+      for (int i = 0; i < j; i ++ ){
         this_world.deformBottom(centralDIFF + 30*i ,bump_height - 5*k);
       }
       centralDIFF =  centralDIFF + 31;
+      j = j-2;
+    }
+
+    centralDIFF =  centralDIFF -31*4 + 9;
+    j = 8;
+    for (int k = 0; k < 4; k++){
+      for (int i = 0; i < j; i ++ ){
+        this_world.deformBottom(centralDIFF + 30*i ,bump_height - 5*k);
+      }
+      centralDIFF =  centralDIFF + 29;
+      j = j-2;
     }
     
       
