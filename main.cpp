@@ -33,7 +33,7 @@ int main (int argc, char **argv) {
     // -------------------------------------------------------------------------------- //
     ///////////          CONSTANTS (to be moved to sim parameter file)        ////////////    
     // -------------------------------------------------------------------------------- //
-    const std::string   out_file_name    = "RAMYA_MAKES_LAND.txt"; // name this relevant
+    const std::string   out_file_name    = "tsunami_output.txt"; // name this relevant
     const std::string   bathy_file       = "bathymetry/Pacific_900.txt"; // name this relevant
     //const std::string   kml_file         = "local/Pacific_36.kml";
     // const std::string   deformation_file = "local/Channel_Islands_test_bump.txt"; // kasey says we dont need this now
@@ -46,7 +46,7 @@ int main (int argc, char **argv) {
     // Bumping up the bottom
     double bump_height = 50.0;
     // Number of times to move squares
-    int N_steps = 20; //number of time steps 10 is fine, to see a bit of movement
+    int N_steps = 50; //number of time steps 10 is fine, to see a bit of movement
     // because boundaries aren't defined very well, we limit the time steps whenever the water hits the walls of things
     // Updating intervals, etc.
     int current_step = 0;
