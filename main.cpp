@@ -34,7 +34,7 @@ int main (int argc, char **argv) {
     ///////////          CONSTANTS (to be moved to sim parameter file)        ////////////    
     // -------------------------------------------------------------------------------- //
     const std::string   out_file_name    = "RAMYA_MAKES_LAND.txt"; // name this relevant
-    const std::string   bathy_file       = "Pacific_900.txt"; // name this relevant
+    const std::string   bathy_file       = "bathymetry/Pacific_900.txt"; // name this relevant
     //const std::string   kml_file         = "local/Pacific_36.kml";
     // const std::string   deformation_file = "local/Channel_Islands_test_bump.txt"; // kasey says we dont need this now
     // until later
