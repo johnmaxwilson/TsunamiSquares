@@ -306,11 +306,16 @@ def bathy_topo_map(LLD_FILE, save_file):
 # --------------------------------------------------------------------------------
 if __name__ == "__main__":
     
-    MODE = "animate"
+    #MODE = "generate"
+    #MODE = "animate"
+    #MODE = "eq_field_plot"
+    MODE = "bathy"
+    #MODE = "interp"
+    #MODE = "eq_field_eval"
     
     if MODE == "generate": #read bethymetry file
         # ====== PARSE ETOPO1 FILE, SAVE SUBSET, EVALUATE EVENT FIELD AT THE LAT/LON, SAVE =====
-        ETOPO1_FILE = "ETOPO1_Bed_g_gmt4.grd"
+        ETOPO1_FILE = "ETOPO1/ETOPO1_Ice_g_gmt4.grd"
         SAVE_NAME = "local/Channel_Islands_largest_subset.txt"
         MODEL     = "../VQModels/UCERF2/ALLCAL2_VQmeshed_3km.h5"
         EVENTS    = "../Desktop/RUNNING/events_greensTrimmed_ALLCAL2_VQmeshed_3km_EQSim_StressDrops_4kyr_24June2015.h5"
@@ -336,16 +341,15 @@ if __name__ == "__main__":
         sim_file = "tsunami_output.txt"
         save_file = sim_file.split(".")[0]+".mp4"
         sim_data = np.genfromtxt(sim_file, dtype=[('time','f8'),('lat','f8'),('lon','f8'), ('z','f8'), ('alt','f8')])
-        FPS = 3 #FRAMES PER SECOND
+        FPS = 15 #FRAMES PER SECOND
         DPI = 100
         T_MAX,T_MIN = sim_data['time'].max(),sim_data['time'].min()
         T_STEP = np.unique(sim_data['time'])[1] - np.unique(sim_data['time'])[0]
         assert T_STEP > 0
         N_STEP = float(T_MAX-T_MIN)/T_STEP
-        # Do it
-        # Ramya Edit: 
-        # for both lines below, we create a different kind of video, I forgot why
-        # make_map_animation(sim_data, FPS, DPI, T_MIN, T_MAX, T_STEP, N_STEP, save_file)
+        # Makes animation on a Basemap plot, currently misbehaving
+        #make_map_animation(sim_data, FPS, DPI, T_MIN, T_MAX, T_STEP, N_STEP, save_file)
+        # Makes animation without any background Basemap
         make_animation(sim_data, FPS, DPI, T_MIN, T_MAX, T_STEP, N_STEP)
 
     if MODE == "eq_field_plot":
@@ -359,7 +363,7 @@ if __name__ == "__main__":
         
     if MODE == "interp":
         # ====== PARSE ETOPO1 FILE, SAVE SUBSET, EVALUATE EVENT FIELD AT THE LAT/LON, SAVE =====
-        ETOPO1_FILE = "ETOPO1_Bed_g_gmt4.grd"
+        ETOPO1_FILE = "ETOPO1/ETOPO1_Ice_g_gmt4.grd"
         SAVE_NAME = "local/Channel_Islands_interp_larger_subset.txt"
         MODEL     = "../VQModels/UCERF2/ALLCAL2_VQmeshed_3km.h5"
         EVENTS    = "../Desktop/RUNNING/events_greensTrimmed_ALLCAL2_VQmeshed_3km_EQSim_StressDrops_4kyr_24June2015.h5"
@@ -379,7 +383,7 @@ if __name__ == "__main__":
         lats,lons,bathy = read_ETOPO1.grab_ETOPO1_subset_interpolated(ETOPO1_FILE,min_lat=MIN_LAT,max_lat=MAX_LAT,min_lon=MIN_LON,max_lon=MAX_LON)
         read_ETOPO1.write_grid(SAVE_NAME,lats,lons,bathy)
         # ---- compute field and write it ------
-        system("python ../vq/PyVQ/pyvq/pyvq.py --field_eval  --event_file {} --model_file {} --event_id {} --lld_file {} ".format(EVENTS, MODEL, EVID, SAVE_NAME))
+        system("python ~/VirtQuake/vq/PyVQ/pyvq/pyvq.py --field_eval  --event_file {} --model_file {} --event_id {} --lld_file {} ".format(EVENTS, MODEL, EVID, SAVE_NAME))
 
 
 if MODE == "eq_field_eval":

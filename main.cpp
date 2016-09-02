@@ -46,7 +46,7 @@ int main (int argc, char **argv) {
     // Bumping up the bottom
     double bump_height = 50.0;
     // Number of times to move squares
-    int N_steps = 50; //number of time steps 10 is fine, to see a bit of movement
+    int N_steps = 20; //number of time steps 10 is fine, to see a bit of movement
     // because boundaries aren't defined very well, we limit the time steps whenever the water hits the walls of things
     // Updating intervals, etc.
     int current_step = 0;
@@ -105,8 +105,8 @@ int main (int argc, char **argv) {
     // }
    
     // Put water into squares to bring water level up to sealevel.
-    std::cout << "Filling with water..." << std::flush;
-    this_world.fillToSeaLevel();
+    //std::cout << "Filling with water..." << std::flush;
+    //this_world.fillToSeaLevel();
 
     // for (int pixel_lons = 0; pixel_lons++; pixel_lons < num_lons){
     //   for ( int pixel_lats = 0; pixel_lats++; pixel_lats < ((int) num_lats*0.5) )
@@ -121,7 +121,7 @@ int main (int argc, char **argv) {
     std::cout << "Deforming the bottom... " << std::endl;
 
    //   == DEFORM A LAND BUMP =======
-    
+
     std::cout << "\nmaking a bowl shape.";
 
     int xDimensions; 
@@ -170,8 +170,9 @@ int main (int argc, char **argv) {
       centralDIFF =  centralDIFF + 29;
       j = j-2;
     }
-    
-      
+
+    std::cout << "Filling with water..." << std::flush;
+    this_world.fillToSeaLevel();
 
     // centralDIFF = 139;
     // for (int i = 0; i < 8; i ++ ){
@@ -184,41 +185,53 @@ int main (int argc, char **argv) {
     // }
 
 
-//    // Optional: diffuse the central bump to be less peaked
-//    this_world.diffuseSquares(dt);
+    // Optional: diffuse the central bump to be less peaked
+    //this_world.diffuseSquares(dt);
     
     //----==  DEFORM A STAIRCASE in the middle. Testing the plane fitting ======-------
-    // tsunamisquares::UIndex central = (int) (0.5*num_lons*(num_lats + 1));
-    // std::cout << " about the central square " << central << "...";
+     tsunamisquares::UIndex central = (int) (0.5*num_lons*(num_lats + 1));
+     std::cout << " about the central square " << central << "...";
     
-    // double mid_bump = this_world.square(central).Lx();
-    // double hi_bump = 2.0*mid_bump;
+     double mid_bump = this_world.square(central).Lx();
+     double hi_bump = 2.0*mid_bump;
     
     
-    // tsunamisquares::UIndex left        = this_world.square(central).left();
-    // tsunamisquares::UIndex right       = this_world.square(central).right();
-    // tsunamisquares::UIndex top         = this_world.square(central).top();
-    // tsunamisquares::UIndex top_left    = this_world.square(central).top_left();
-    // tsunamisquares::UIndex top_right   = this_world.square(central).top_right();
-    // tsunamisquares::UIndex bottom      = this_world.square(central).bottom();
-    // tsunamisquares::UIndex bottom_left = this_world.square(central).bottom_left();
-    // tsunamisquares::UIndex bottom_right= this_world.square(central).bottom_right();
+     tsunamisquares::UIndex left        = this_world.square(central).left();
+     tsunamisquares::UIndex right       = this_world.square(central).right();
+     tsunamisquares::UIndex top         = this_world.square(central).top();
+     tsunamisquares::UIndex top_left    = this_world.square(central).top_left();
+     tsunamisquares::UIndex top_right   = this_world.square(central).top_right();
+     tsunamisquares::UIndex bottom      = this_world.square(central).bottom();
+     tsunamisquares::UIndex bottom_left = this_world.square(central).bottom_left();
+     tsunamisquares::UIndex bottom_right= this_world.square(central).bottom_right();
 
-    // // Stair case is hi to the left, drops to zero on the right
-    // this_world.deformBottom(right,        hi_bump);
-    // this_world.deformBottom(top_right,    hi_bump);
-    // this_world.deformBottom(bottom_right, hi_bump);
+     // Stair case is hi to the left, drops to zero on the right
+     //this_world.deformBottom(right,        hi_bump);
+     //this_world.deformBottom(top_right,    hi_bump);
+     //this_world.deformBottom(bottom_right, hi_bump);
     
     // this_world.deformBottom(central,     mid_bump);
     // this_world.deformBottom(top,         mid_bump);
     // this_world.deformBottom(bottom,      mid_bump);
     
-    // this_world.getGradient_planeFit(central);
+     //this_world.getGradient_planeFit(central);
     
 //    double x_result = this_world.fitPointsToPlane(this_world.square(central).get_nearest_neighbors_and_self());
 //    std::cout << "Best fit plane to " << this_world.square(central).get_nearest_neighbors_and_self().size() << " squares." << std::endl;
 //    std::cout << "grabbed x = (" << x_result[0] << ", " << x_result[1] << ", " << x_result[2] << std::endl;
 
+     mid_bump = 10.0;
+     this_world.deformBottom(right,        mid_bump);
+     this_world.deformBottom(top_right,    mid_bump);
+     this_world.deformBottom(bottom_right, mid_bump);
+     this_world.deformBottom(central,      mid_bump);
+     this_world.deformBottom(top,          mid_bump);
+     this_world.deformBottom(bottom,       mid_bump);
+     this_world.deformBottom(left,         mid_bump);
+     this_world.deformBottom(top_left,     mid_bump);
+     this_world.deformBottom(bottom_left,  mid_bump);
+
+     //this_world.diffuseSquares(dt);
 
    // --------------------------------------------------------------------------------//
    // --==                         File I/O Preparation                          --== //   
