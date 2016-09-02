@@ -21,15 +21,18 @@
 #include "TsunamiSquares.h"
 #include <time.h>
 
+#define assertThrow(COND, ERR_MSG) assert(COND);
+
 int main (int argc, char **argv) {
     // Initialize the world (where the squares live), squares and vertices
     tsunamisquares::World                       this_world;
     tsunamisquares::SquareIDSet::const_iterator it;
     tsunamisquares::SquareIDSet                 ids;
+    std::ifstream								param_file;
     std::ofstream                               out_file;
     clock_t                                     start,end;
-    
-    
+
+    /*  Wilson: Trying a simple input file for these parameters.  Can be improved in the future for readability and suseptability to errors
     // -------------------------------------------------------------------------------- //
     ///////////          CONSTANTS (to be moved to sim parameter file)        ////////////    
     // -------------------------------------------------------------------------------- //
@@ -54,9 +57,47 @@ int main (int argc, char **argv) {
     int save_step = 1;
     double time = 0.0;
     int output_num_digits_for_percent = 3;
+    */
+
+    // Ensure we are given the parameter file name
+	assertThrow(argc == 2, "usage: param_file");
+
+	param_file.open(argv[argc-1]);
+
+
+	std::string 				param_name;
+	std::string					value;
+	std::vector<std::string>	param_values;
+
+	while ( param_file >> param_name >> value )
+	{
+	  param_values.push_back(value);
+	}
+
+    const std::string   out_file_name    	= param_values[0];
+    const std::string   bathy_file       	= param_values[1];
+    const std::string   kml_file         	= param_values[2];
+    const std::string   deformation_file 	= param_values[3];
+
+    // Diffusion constant (fit to a reasonable looking sim)
+    double 	D 								= atof(param_values[4].c_str()); //140616.45;
+    // Flattening the bathymetry to a constant depth (negative for below sea level)
+    double 	new_depth 						= atof(param_values[5].c_str());
+    // Bumping up the bottom
+    double 	bump_height 					= atof(param_values[6].c_str());
+    // Number of times to move squares
+    int 	N_steps 						= atof(param_values[7].c_str()); //number of time steps 10 is fine, to see a bit of movement
+    // because boundaries aren't defined very well, we limit the time steps whenever the water hits the walls of things
+    // Updating intervals, etc.
+    int 	current_step 					= atof(param_values[8].c_str());
+    int 	update_step 					= atof(param_values[9].c_str());
+    int 	save_step 						= atof(param_values[10].c_str());
+    double 	time 							= atof(param_values[11].c_str());
+    int 	output_num_digits_for_percent 	= atof(param_values[12].c_str());
+
+
     // Header for the simulation output
     const std::string   header = "# time \t lon \t\t lat \t\t water height \t altitude \n";
-    
     
     
     // -------------------------------------------------------------------------------- //

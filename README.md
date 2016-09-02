@@ -5,7 +5,7 @@ To compile, use
 $ bash setup.sh
 
 Run simulation with
-$ ./TsunamiSquares
+$ ./TsunamiSquares tsunami_params.txt
 
 Visualizations can be created with
 $ python tsunamisquares.py

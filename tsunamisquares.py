@@ -307,9 +307,9 @@ def bathy_topo_map(LLD_FILE, save_file):
 if __name__ == "__main__":
     
     #MODE = "generate"
-    #MODE = "animate"
+    MODE = "animate"
     #MODE = "eq_field_plot"
-    MODE = "bathy"
+    #MODE = "bathy"
     #MODE = "interp"
     #MODE = "eq_field_eval"
     
