@@ -306,20 +306,20 @@ def bathy_topo_map(LLD_FILE, save_file):
 # --------------------------------------------------------------------------------
 if __name__ == "__main__":
     
-    #MODE = "generate"
+#    MODE = "generate"
     MODE = "animate"
-    #MODE = "eq_field_plot"
-    #MODE = "bathy"
-    #MODE = "interp"
-    #MODE = "eq_field_eval"
+#    MODE = "eq_field_plot"
+#    MODE = "bathy"
+#    MODE = "interp"
+#    MODE = "eq_field_eval"
     
     if MODE == "generate": #read bethymetry file
         # ====== PARSE ETOPO1 FILE, SAVE SUBSET, EVALUATE EVENT FIELD AT THE LAT/LON, SAVE =====
         ETOPO1_FILE = "ETOPO1/ETOPO1_Ice_g_gmt4.grd"
-        SAVE_NAME = "local/Channel_Islands_largest_subset.txt"
-        MODEL     = "../VQModels/UCERF2/ALLCAL2_VQmeshed_3km.h5"
-        EVENTS    = "../Desktop/RUNNING/events_greensTrimmed_ALLCAL2_VQmeshed_3km_EQSim_StressDrops_4kyr_24June2015.h5"
-        EVID      = 1157
+        SAVE_NAME = "bathymetry/Channel_Islands_largest_subset_lld.txt"
+        MODEL     = "~/VirtQuake/UCERF3_reindexed/Model/UCERF3_VQmeshed_from_EQSIM_ReIndexed_AseismicCut_0-11_taper_drops0.9.h5"
+        EVENTS    = "~/VirtQuake/UCERF3_reindexed/VQ_runs/events_UCERF3_ReIndexed_AseismicCut_0-11_taper_drops0-9_50kyr_dyn0-2_greenLimits.h5"
+        EVID      = 39951
         # Full range
         #MIN_LAT = 33.503
         #MAX_LAT = 34.519
@@ -335,7 +335,7 @@ if __name__ == "__main__":
         lats,lons,bathy = read_ETOPO1.grab_ETOPO1_subset(ETOPO1_FILE,min_lat=MIN_LAT,max_lat=MAX_LAT,min_lon=MIN_LON,max_lon=MAX_LON)
         read_ETOPO1.write_grid(SAVE_NAME,lats,lons,bathy)
         # ---- compute field and write it ------
-        system("python ../vq/PyVQ/pyvq/pyvq.py --field_eval  --event_file {} --model_file {} --event_id {} --lld_file {} ".format(EVENTS, MODEL, EVID, SAVE_NAME))
+        system("python ~/VirtQuake/vq/PyVQ/pyvq/pyvq.py --field_eval  --event_file {} --model_file {} --event_id {} --lld_file {} ".format(EVENTS, MODEL, EVID, SAVE_NAME))
     
     if MODE == "animate":
         sim_file = "tsunami_output.txt"
@@ -354,7 +354,7 @@ if __name__ == "__main__":
 
     if MODE == "eq_field_plot":
         Levels = [-.3, -.2, -.1, -.05, -.008, .008, .05, .1, .2, .3]
-        plot_eq_displacements("local/Channel_Islands_dispField_event1157.txt",Levels, "disp_map.png")
+        plot_eq_displacements("bathymetry/Channel_Islands_interp_larger_subset_lld_dispField_event39951.txt",Levels, "plots/disp_map.png")
         
     if MODE == "bathy":
         #Levels = [-3, -.2, -.1, -.05, -.008, .008, .05, .1, .2, .3]
@@ -364,10 +364,10 @@ if __name__ == "__main__":
     if MODE == "interp":
         # ====== PARSE ETOPO1 FILE, SAVE SUBSET, EVALUATE EVENT FIELD AT THE LAT/LON, SAVE =====
         ETOPO1_FILE = "ETOPO1/ETOPO1_Ice_g_gmt4.grd"
-        SAVE_NAME = "local/Channel_Islands_interp_larger_subset.txt"
-        MODEL     = "../VQModels/UCERF2/ALLCAL2_VQmeshed_3km.h5"
-        EVENTS    = "../Desktop/RUNNING/events_greensTrimmed_ALLCAL2_VQmeshed_3km_EQSim_StressDrops_4kyr_24June2015.h5"
-        EVID      = 1157
+        SAVE_NAME = "bathymetry/Channel_Islands_interp_larger_subset_lld.txt"
+        MODEL     = "~/VirtQuake/UCERF3_reindexed/Model/UCERF3_VQmeshed_from_EQSIM_ReIndexed_AseismicCut_0-11_taper_drops0.9.h5"
+        EVENTS    = "~/VirtQuake/UCERF3_reindexed/VQ_runs/events_UCERF3_ReIndexed_AseismicCut_0-11_taper_drops0-9_50kyr_dyn0-2_greenLimits.h5"
+        EVID      = 39951
         # Full range
         #MIN_LAT = 33.4
         #MAX_LAT = 34.6
@@ -387,12 +387,12 @@ if __name__ == "__main__":
 
 
 if MODE == "eq_field_eval":
-        LLD_NAME = "local/Channel_Islands_interp_larger_subset.txt"
-        MODEL     = "../VQModels/UCERF2/ALLCAL2_VQmeshed_3km.h5"
-        EVENTS    = "../Desktop/RUNNING/events_greensTrimmed_ALLCAL2_VQmeshed_3km_EQSim_StressDrops_4kyr_24June2015.h5"
-        EVID      = 1157
+        LLD_NAME = "bathymetry/Channel_Islands_interp_larger_subset_lld.txt"
+        MODEL     = "~/VirtQuake/UCERF3_reindexed/Model/UCERF3_VQmeshed_from_EQSIM_ReIndexed_AseismicCut_0-11_taper_drops0.9.h5"
+        EVENTS    = "~/VirtQuake/UCERF3_reindexed/VQ_runs/events_UCERF3_ReIndexed_AseismicCut_0-11_taper_drops0-9_50kyr_dyn0-2_greenLimits.h5"
+        EVID      = 39951
         # ---- compute field and write it ------
-        system("python ../vq/PyVQ/pyvq/pyvq.py --field_eval  --event_file {} --model_file {} --event_id {} --lld_file {} ".format(EVENTS, MODEL, EVID, LLD_NAME))
+        system("python ~/VirtQuake/vq/PyVQ/pyvq/pyvq.py --field_eval  --event_file {} --model_file {} --event_id {} --lld_file {} ".format(EVENTS, MODEL, EVID, LLD_NAME))
 
 
 
