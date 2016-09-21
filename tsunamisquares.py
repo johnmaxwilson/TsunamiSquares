@@ -45,7 +45,7 @@ def make_animation(sim_data, FPS, DPI, T_MIN, T_MAX, T_STEP, N_STEP):
     # Initialize movie writing stuff
     FFMpegWriter = manimation.writers['ffmpeg']
     metadata = dict(title='TsunamiSquares', artist='Matplotlib',
-            comment='Bump in the middle, with accelerations.')
+            comment='Animation')
     writer = FFMpegWriter(fps=FPS, metadata=metadata)
 
     # Initialize the frame and axes
