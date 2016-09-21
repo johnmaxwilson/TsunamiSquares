@@ -83,7 +83,7 @@ int main (int argc, char **argv) {
     // Diffusion constant (fit to a reasonable looking sim)
     double 	D 								= atof(param_values[4].c_str()); //140616.45;
     // Time step in seconds
-    double dt_param								= atof(param_values[5].c_str());
+    double  dt_param								= atof(param_values[5].c_str());
     // Number of times to move squares
     int 	N_steps 						= atof(param_values[6].c_str()); //number of time steps 10 is fine, to see a bit of movement
     // because boundaries aren't defined very well, we limit the time steps whenever the water hits the walls of things
@@ -153,7 +153,7 @@ int main (int argc, char **argv) {
     //   tsunamisquares::UIndex landright   = this_world.square(landcentral).right();
     //   this_world.deformBottom(landright,  bump_height);
     // }
-   
+
     // Put water into squares to bring water level up to sealevel.
     //std::cout << "Filling with water..." << std::flush;
     //this_world.fillToSeaLevel();
@@ -163,6 +163,7 @@ int main (int argc, char **argv) {
     //     this_world.deformBottom(pixel_lons*pixel_lats,  bump_height*10);
     // }
     
+    // Put water into squares to bring water level up to sealevel.
     std::cout << "Filling with water..." << std::endl;
 	this_world.fillToSeaLevel();
 
@@ -177,8 +178,57 @@ int main (int argc, char **argv) {
 
     this_world.deformFromFile(deformation_file);
 
-    /*
-    //   == DEFORM A LAND BUMP =======
+
+    //this_world.diffuseSquares(dt);
+
+    // --------------------------------------------------------------------------------//
+    // --==                         File I/O Preparation                          --== //
+    // --------------------------------------------------------------------------------//
+    out_file.open(out_file_name.c_str());
+    out_file << header.c_str();
+    std::cout.precision(output_num_digits_for_percent);
+
+
+
+    // --------------------------------------------------------------------------------//
+    // --========-           Begin the Simulation; Move the Squares          ----====- //
+    // --------------------------------------------------------------------------------//
+    std::cout << "Moving squares....time_step=" <<dt << "...";
+    while (time < max_time) {
+        // If this is a writing step, print status
+        if (current_step%update_step == 0) {
+            std::cout << ".." << (100.0*current_step)/N_steps << "%..";
+            std::cout << std::flush;
+        }
+
+        // Write the current state to file
+        if (current_step%save_step == 0) {
+            for (it=ids.begin(); it!=ids.end(); ++it) {
+                this_world.write_square_ascii(out_file, time, *it);
+            }
+        }
+        // Move the squares
+        this_world.moveSquares(dt);
+        //TODO: turn back on:
+        this_world.diffuseSquares(dt); //smoothing operation
+        time += dt;
+        current_step += 1;
+    }
+    out_file.close();
+
+
+    // --------------------------------------------------------------------------------//
+    // --========---                    Wrap up and Reporting            ---=======--- //
+    // --------------------------------------------------------------------------------//
+    std::cout << std::endl << "Results written to " << out_file_name << std::endl;
+    end = clock();
+    std::cout.precision(2+output_num_digits_for_percent);
+    std::cout << "Total time: " << (float(end)-float(start))/CLOCKS_PER_SEC << " secs." << std::endl << std::endl;
+    return 0;
+}
+
+/*
+    //   == DEFORM A BOWL =======
 
     std::cout << "\nmaking a bowl shape.";
 
@@ -230,7 +280,7 @@ int main (int argc, char **argv) {
     }
 
 
-
+	//   == DEFORM A LAND BUMP =======
     // centralDIFF = 139;
     // for (int i = 0; i < 8; i ++ ){
     //   this_world.deformBottom(centralDIFF + 30*i ,bump_height);
@@ -288,54 +338,6 @@ int main (int argc, char **argv) {
     this_world.deformBottom(top_left,     mid_bump);
     this_world.deformBottom(bottom_left,  mid_bump);
     */
-    //this_world.diffuseSquares(dt);
-
-    // --------------------------------------------------------------------------------//
-    // --==                         File I/O Preparation                          --== //
-    // --------------------------------------------------------------------------------//
-    out_file.open(out_file_name.c_str());
-    out_file << header.c_str();
-    std::cout.precision(output_num_digits_for_percent);
-
-
-
-    // --------------------------------------------------------------------------------//
-    // --========-           Begin the Simulation; Move the Squares          ----====- //
-    // --------------------------------------------------------------------------------//
-    std::cout << "Moving squares....time_step=" <<dt << "...";
-    while (time < max_time) {
-        // If this is a writing step, print status
-        if (current_step%update_step == 0) {
-            std::cout << ".." << (100.0*current_step)/N_steps << "%..";
-            std::cout << std::flush;
-        }
-   
-        // Write the current state to file
-        if (current_step%save_step == 0) {
-            for (it=ids.begin(); it!=ids.end(); ++it) {
-                this_world.write_square_ascii(out_file, time, *it);
-            }
-        }
-        // Move the squares
-        this_world.moveSquares(dt);
-        //TODO: turn back on: his_world.diffuseSquares(dt); //smoothing operation
-        time += dt;
-        current_step += 1;
-    }
-    out_file.close();
-   
-   
-    // --------------------------------------------------------------------------------//
-    // --========---                    Wrap up and Reporting            ---=======--- //
-    // --------------------------------------------------------------------------------//
-    std::cout << std::endl << "Results written to " << out_file_name << std::endl;
-    end = clock();
-    std::cout.precision(2+output_num_digits_for_percent);
-    std::cout << "Total time: " << (float(end)-float(start))/CLOCKS_PER_SEC << " secs." << std::endl << std::endl;
-    return 0;
-}
-
-
 //////////// Chalkboard ////////////////
 
 // Grab all squares and print

@@ -165,7 +165,7 @@ void tsunamisquares::World::moveSquares(const double dt) {
                 std::cout << "new velo: " << new_velo << std::endl;
             }
         
-            // Find the nearest squares and their distances to the new position
+            // Find the 8 nearest squares and their distances to the new position
             neighbors = getNearest(new_pos);
             //neighbors = getNearest_from(new_pos, sit->first);
             
@@ -184,10 +184,12 @@ void tsunamisquares::World::moveSquares(const double dt) {
                 double dy = fabs(new_pos[1] - squareCenter(neighbor_it->first)[1]);
                 double Lx = sit->second.Lx();
                 double Ly = sit->second.Ly();
-                double this_fraction = (1-dx/Lx)*(1-dy/Ly);
+                double x_frac = (1-dx/Lx);
+                double y_frac = (1-dy/Ly);
+                double this_fraction = x_frac*y_frac;
                 
                 // Add neighbors until we get 4 that have fraction > 0 
-                if (this_fraction > 0 && originalFractions.size() < 4) {
+                if (x_frac > 0 && y_frac > 0 && originalFractions.size() < 4) {
                     fraction_sum += this_fraction;
                     originalFractions.insert(std::make_pair(nit->second, this_fraction));
                     if (debug) {
@@ -350,6 +352,7 @@ tsunamisquares::Vec<2> tsunamisquares::World::fitPointsToPlane(const SquareIDSet
 //    std::cout << "   " << A[6] << ", " << A[7] << ", " << A[8] << std::endl;
     
     // Matrix solver below is adapted from Virtual Quake
+    /*
     int     j, k;
     double  v, f, sum;
     int     n = 3;
@@ -378,6 +381,12 @@ tsunamisquares::Vec<2> tsunamisquares::World::fitPointsToPlane(const SquareIDSet
         x[i] = sum/A[i+n*i];
         
     }
+    */
+
+    //Cramer's rule for 3x3 system
+    float det_A = (A[0]*A[4]*A[8]+A[1]*A[5]*A[6]+A[3]*A[7]*A[2]-A[2]*A[4]*A[6]-A[1]*A[3]*A[8]-A[0]*A[5]*A[7]);
+    x[0] = (b[0]*A[4]*A[8]+A[1]*A[5]*b[2]+b[1]*A[7]*A[2]-A[2]*A[4]*b[2]-A[1]*b[1]*A[8]-b[0]*A[5]*A[7])/det_A;
+    x[1] = (A[0]*b[1]*A[8]+b[0]*A[5]*A[6]+A[3]*b[2]*A[2]-A[2]*b[1]*A[6]-b[0]*A[3]*A[8]-A[0]*A[5]*b[2])/det_A;
 
     //std::cout << "\nsolved for x: " << x[0] << ", " << x[1] << ", " << x[2] << std::endl;
     
@@ -599,6 +608,7 @@ std::map<double, tsunamisquares::UIndex> tsunamisquares::World::getNearest(const
     std::map<UIndex, Square>::const_iterator  sit;
     std::map<double, UIndex>                  neighbors;
 
+    // TODO: Speed this up!  Maybe use an Rtree from libspatialindex
     // Compute distance from "location" to the center of each square.
     // Since we use a map, the distances will be ordered since they are the keys
     for (sit=_squares.begin(); sit!=_squares.end(); ++sit) {

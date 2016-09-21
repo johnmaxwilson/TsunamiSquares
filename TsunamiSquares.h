@@ -211,8 +211,8 @@ namespace tsunamisquares {
             Vec<2> updated_momentum(void) const {
                 return _data._updated_momentum;
             };
-            void set_updated_momentum(const Vec<2> &new_velocity) {
-                _data._updated_momentum = new_velocity;
+            void set_updated_momentum(const Vec<2> &new_momentum) {
+                _data._updated_momentum = new_momentum;
             };
             
             Vec<2> accel(void) const {
