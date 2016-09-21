@@ -37,12 +37,23 @@
 #include <GeographicLib/Constants.hpp>
 #endif
 
+#include <boost/geometry.hpp>
+#include <boost/geometry/geometries/point.hpp>
+#include <boost/geometry/index/rtree.hpp>
+#include <boost/foreach.hpp>
+
+namespace bg = boost::geometry;
+namespace bgi = boost::geometry::index;
+
 #define EARTH_MEAN_RADIUS       6371000.0           // in m
 #define EARTH_EQUATORIAL_RADIUS 6378137.0           // in m
 #define EARTH_POLAR_RADIUS      6356752.314245      // in m
 #define WGS_84_FLATTENING       1/298.257223563
 
 #define CROSS_TOLERANCE 0.000001
+
+
+
 
 namespace tsunamisquares {
     // Provides general setup information regarding the library.
@@ -521,4 +532,30 @@ namespace tsunamisquares {
 
             VectorList convertArray2xyz(const DoubleList &lats, const DoubleList &lons) const;
     };
+
+    typedef bg::model::point<float, 2, bg::cs::cartesian> point;
+    typedef std::pair<point, unsigned> value;
+
+    class RTree {
+        private:
+    		// create the rtree using default constructor
+    		bgi::rtree< value, bgi::quadratic<16> > _rtree;
+
+		public:
+    		void addPoint(const Vec<2> &xy, const unsigned int &i){
+    			_rtree.insert(std::make_pair(point(xy[0], xy[1]), i));
+    		};
+
+    		std::vector<unsigned int> getNearest(const Vec<2> &xy, const int &numNear) const {
+    			std::vector<value> result_n;
+    			std::vector<unsigned int> nearIDs;
+
+    			_rtree.query(bgi::nearest(point(xy[0], xy[1]), numNear), std::back_inserter(result_n));
+    			BOOST_FOREACH(value const& v, result_n)
+					nearIDs.push_back(v.second);
+    			return nearIDs;
+    		};
+
+
+	};
 }

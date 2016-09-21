@@ -168,6 +168,7 @@ void tsunamisquares::World::moveSquares(const double dt) {
             // Find the 8 nearest squares and their distances to the new position
             neighbors = getNearest(new_pos);
             //neighbors = getNearest_from(new_pos, sit->first);
+            //neighbors = getNearest_rtree(new_pos, 8);
             
             // Init these for renormalizing the fractions
             double fraction_sum = 0.0;
@@ -608,19 +609,37 @@ std::map<double, tsunamisquares::UIndex> tsunamisquares::World::getNearest(const
     std::map<UIndex, Square>::const_iterator  sit;
     std::map<double, UIndex>                  neighbors;
 
-    // TODO: Speed this up!  Maybe use an Rtree from libspatialindex
     // Compute distance from "location" to the center of each square.
     // Since we use a map, the distances will be ordered since they are the keys
     for (sit=_squares.begin(); sit!=_squares.end(); ++sit) {
         double square_dist = squareCenter(sit->first).dist(location);
         square_dists.insert(std::make_pair(square_dist, sit->second.id()));
     }
-    
+
     // Iterate again thru the distance-sorted map, grab the closest squares
     for (it=square_dists.begin(); it!=square_dists.end(); ++it) {
         neighbors.insert(std::make_pair(it->first, it->second));
         if (neighbors.size() == 8) break;
     }
+
+    return neighbors;
+}
+
+// Much faster n-nearest neighbor search using an RTree
+std::map<double, tsunamisquares::UIndex> tsunamisquares::World::getNearest_rtree(const Vec<2> &location, const int &numNear)const {
+    std::vector<UIndex>						  nIDs;
+    std::map<double, UIndex>                  neighbors;
+    double 									  square_dist;
+
+    // TODO: Check that the RTree method is working
+    //Use RTree query to get numNear nearest neighbors
+    nIDs = _square_rtree.getNearest(location, numNear);
+
+    // Compute distance from "location" to the center of each neighbor.
+    for (int i=0; i<nIDs.size(); ++i) {
+		square_dist = squareCenter(nIDs[i]).dist(location);
+		neighbors.insert(std::make_pair(square_dist, nIDs[i]));
+	}
     
     return neighbors;
 }
@@ -1028,7 +1047,7 @@ int tsunamisquares::World::read_bathymetry(const std::string &file_name) {
     desc_line >> num_lons;
     _num_latitudes = num_lats;
     _num_longitudes = num_lons;
-    
+
     // Set the number of vertices and squares
     num_vertices = num_lats*num_lons;
     num_squares = num_vertices;
@@ -1058,6 +1077,11 @@ int tsunamisquares::World::read_bathymetry(const std::string &file_name) {
         _vertices[i].set_lld(_vertices[i].lld(), getBase());
     }
     
+    //Create RTree of vertex xy coords
+    for (i=0; i<num_vertices; ++i) {
+    	_square_rtree.addPoint(_vertices[i].xy(), i);
+    }
+
     // Assign the squares
     for (i=0; i<num_squares; ++i) {
         Square     new_square;

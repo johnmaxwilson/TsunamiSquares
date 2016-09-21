@@ -385,6 +385,7 @@ namespace tsunamisquares {
             LatLonDepth _base;
             double _min_lat, _max_lat, _min_lon, _max_lon;
             int _num_latitudes, _num_longitudes;
+            RTree _square_rtree;
             // Diffusion constant
             static const double _D = 140616.45;//100000;
         
@@ -452,6 +453,7 @@ namespace tsunamisquares {
             SquareIDSet getVertexIDs(void) const;
 
             std::map<double, UIndex> getNearest(const Vec<2> &location) const;
+            std::map<double, UIndex> getNearest_rtree(const Vec<2> &location, const int &numNear) const;
             std::map<double, tsunamisquares::UIndex> getNearest_from(const Vec<2> &location, const UIndex &original_id) const;
             SquareIDSet getNeighborIDs(const UIndex &square_id) const;
             
