@@ -1,3 +1,5 @@
+This repository is depricated, and has been surpassed by <https://github.com/johnmaxwilson/TsunamiGlobe> as the actively-developed repository.  TsunamiGlobe uses GIS libraries to accurately calculate geometries on a spherical earth, and has many other improved features, including multiprocessing, improved smoothing algorithms, and improved stability.
+
 # TsunamiSquares
 C++ library for modeling tsunamis from Virtual Quake simulated earthquakes using the Tsunami Squares method (Steven N. Ward).  NOAA ETOPO1 combined bathymetry and topology data included.
 
